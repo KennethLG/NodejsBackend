@@ -1,13 +1,16 @@
 const express = require("express");
-const { moviesMock } = require("../utils/mocks/movies");
+const MoviesService = require("../services/movies");
 
 function moviesAPI(app) {
 	const router = express.Router();
 	app.use("/api/movies", router);
 
+	const moviesService = new MoviesService();
+
 	router.get("/", async (req, res, next) => {
+		const {tags} = req.query;
 		try {
-			const movies = await Promise.resolve(moviesMock);
+			const movies = await moviesService.getMovies({ tags});
 			res.status(200).json({
 				data: movies,
 				msg: "movies listed"
@@ -17,9 +20,10 @@ function moviesAPI(app) {
 		}
 	});
 
-	router.get("/:id", async (req, res, next) => {
+	router.get("/:movieId", async (req, res, next) => {
+		const { movieId } = req.params;
 		try {
-			const movies = await Promise.resolve(moviesMock[0]);
+			const movies = await moviesService.getMovie({ movieId});
 			res.status(200).json({
 				data: movies,
 				msg: "movies retrieve"
@@ -30,8 +34,9 @@ function moviesAPI(app) {
 	});
 
 	router.post("/", async (req, res, next) => {
+		const {body:movie} = req;
 		try {
-			const createMovieId = await Promise.resolve(moviesMock[0].id);
+			const createMovieId = await moviesService.createMovie({ movie });
 			res.status(201).json({
 				data: createMovieId,
 				msg: "movies created"
@@ -42,8 +47,10 @@ function moviesAPI(app) {
 	});
 
 	router.put("/:id", async (req, res, next) => {
+		const { movieId } = req.params;
+		const {body:movie} = req;
 		try {
-			const updatedMovie = await Promise.resolve(moviesMock[0].id);
+			const updatedMovie = await moviesService.updatedMovie({ movieId, movie});
 			res.status(200).json({
 				data: updatedMovie,
 				msg: "movies listed"
@@ -54,8 +61,9 @@ function moviesAPI(app) {
 	});
 
 	router.delete("/:id", async (req, res, next) => {
+		const { movieId } = req.params;
 		try {
-			const deletedMovie = await Promise.resolve(moviesMock[0].id);
+			const deletedMovie = await moviesService.deleteMovie({ movieId });
 			res.status(200).json({
 				data: deletedMovie,
 				msg: "movie deleted"
