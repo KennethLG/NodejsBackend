@@ -1,24 +1,24 @@
 const joi = require("joi");
 
-const charIdSchema = joi.string().regex(/^[0-9a-fA-F]{24}$/);
-const charNameSchema = joi.string().max(20);
-const charHeightSchema = joi.string().max(4);
-const charGenderSchema = joi.string().max(10);
+const movieIdSchema = joi.string().regex(/^[0-9a-fA-F]{24}$/);
+const movieNameSchema = joi.string().max(20);
+const movieHeightSchema = joi.string().max(4);
+const movieGenderSchema = joi.string().max(10);
 
-const createCharSchema = joi.object({
-	name : charNameSchema.required(),
-	height : charHeightSchema.required(),
-	gender : charGenderSchema.required()
+const createMovieSchema = joi.object({
+	name : movieNameSchema.required(),
+	height : movieHeightSchema.required(),
+	gender : movieGenderSchema.required()
 });
 
-const updateCharSchema = joi.object({
-	name : charNameSchema,
-	height : charHeightSchema,
-	gender : charGenderSchema
+const updateMovieSchema = joi.object({
+	name : movieNameSchema,
+	height : movieHeightSchema,
+	gender : movieGenderSchema
 });
 
 module.exports = {
-	charIdSchema,
-	createCharSchema,
-	updateCharSchema
+	movieIdSchema,
+	createMovieSchema,
+	updateMovieSchema
 };
