@@ -1,16 +1,27 @@
-
+const boom = require("@hapi/boom");
 
 function logError(err, req, res, next) {
 	console.log(err);
 	next(err);
 }
 
+function wrapError(err, req, res, next) {
+	if (!err.isBoom) {
+		next(boom.badImplementation(err));
+	}
+
+	next(err);
+}
+
 function errorHandler(err, req, res, next) {
-	res.status(err.status || 500);
-	res.json(err.message);
+	const {output: {statusCode, payload}} = err;
+
+	res.status(statusCode);
+	res.json(payload);
 }
 
 module.exports = {
 	logError,
+	wrapError,
 	errorHandler
 };
