@@ -10,6 +10,7 @@ function moviesAPI(app) {
 	router.get("/", async (req, res, next) => {
 		const {tags} = req.query;
 		try {
+			//throw new Error("error");
 			const movies = await moviesService.getMovies({ tags});
 			res.status(200).json({
 				data: movies,
@@ -26,7 +27,7 @@ function moviesAPI(app) {
 			const movies = await moviesService.getMovie({ movieId});
 			res.status(200).json({
 				data: movies,
-				msg: "movies retrieve"
+				msg: "movie retrieve"
 			})
 		} catch(e) {
 			next(e);
@@ -46,21 +47,21 @@ function moviesAPI(app) {
 		}
 	});
 
-	router.put("/:id", async (req, res, next) => {
+	router.put("/:movieId", async (req, res, next) => {
 		const { movieId } = req.params;
 		const {body:movie} = req;
 		try {
-			const updatedMovie = await moviesService.updatedMovie({ movieId, movie});
+			const updatedMovie = await moviesService.updateMovie({ movieId, movie});
 			res.status(200).json({
 				data: updatedMovie,
-				msg: "movies listed"
+				msg: "movie updated"
 			})
 		} catch(e) {
 			next(e);
 		}
 	});
 
-	router.delete("/:id", async (req, res, next) => {
+	router.delete("/:movieId", async (req, res, next) => {
 		const { movieId } = req.params;
 		try {
 			const deletedMovie = await moviesService.deleteMovie({ movieId });

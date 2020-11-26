@@ -23,8 +23,8 @@ class MoviesService {
 		return createMovieId;
 	}
 
-	async updateMovie({movieId, movie} = {}) {
-		const updateMovieId = this.mongodb.create(this.collection, movieId, movie);
+	async updateMovie({movieId, movie}) {
+		const updateMovieId = this.mongodb.update(this.collection, movieId, movie);
 		return updateMovieId;
 	}
 
