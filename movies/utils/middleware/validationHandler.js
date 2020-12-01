@@ -3,9 +3,7 @@ const joi = require("joi");
 const {movieIdSchema} = require("../schemas/movies");
 
 function validate(data, schema) {
-	if (data.movieId) {
-		return joi.assert(data.movieId, movieIdSchema);
-	}
+	if (data.movieId) data = data.movieId;
 	return joi.assert(data, schema);
 }
 
